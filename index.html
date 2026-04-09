@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INNOVATIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --red: #DC2626;
+            --red-dark: #991B1B;
+            --red-light: #F87171;
+            --red-glow: rgba(220, 38, 38, .25);
+            --dark: #08080D;
+            --dark2: #0E0E16;
+            --dark3: #13131D;
+            --card: #111119;
+            --border: #1C1C2A;
+            --text: #F0F0F5;
+            --mid: #A0A0B8;
+            --dim: #6A6A82;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            user-select: none
+        }
+
+        /* ── background effects ── */
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(rgba(220, 38, 38, .025) 1px, transparent 1px), linear-gradient(90deg, rgba(220, 38, 38, .025) 1px, transparent 1px);
+            background-size: 64px 64px;
+            z-index: 0;
+            pointer-events: none
+        }
+
+        .glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(160px);
+            pointer-events: none;
+            z-index: 0
+        }
+
+        .g1 {
+            width: 700px;
+            height: 700px;
+            background: var(--red);
+            top: -280px;
+            right: -280px;
+            opacity: .12
+        }
+
+        .g2 {
+            width: 500px;
+            height: 500px;
+            background: var(--red);
+            bottom: -200px;
+            left: -200px;
+            opacity: .08
+        }
+
+        .g3 {
+            width: 300px;
+            height: 300px;
+            background: var(--red-dark);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: .05
+        }
+
+        /* ── particles ── */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: var(--red);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            animation: float linear infinite
+        }
+
+        @keyframes float {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh)
+            }
+
+            10% {
+                opacity: .4
+            }
+
+            90% {
+                opacity: .4
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-20px)
+            }
+        }
+
+        .p1 {
+            left: 10%;
+            animation-duration: 12s;
+            animation-delay: 0s
+        }
+
+        .p2 {
+            left: 25%;
+            animation-duration: 16s;
+            animation-delay: 2s
+        }
+
+        .p3 {
+            left: 40%;
+            animation-duration: 14s;
+            animation-delay: 4s
+        }
+
+        .p4 {
+            left: 55%;
+            animation-duration: 18s;
+            animation-delay: 1s
+        }
+
+        .p5 {
+            left: 70%;
+            animation-duration: 13s;
+            animation-delay: 3s
+        }
+
+        .p6 {
+            left: 85%;
+            animation-duration: 15s;
+            animation-delay: 5s
+        }
+
+        .p7 {
+            left: 15%;
+            animation-duration: 17s;
+            animation-delay: 6s
+        }
+
+        .p8 {
+            left: 60%;
+            animation-duration: 11s;
+            animation-delay: 7s
+        }
+
+        .p9 {
+            left: 35%;
+            animation-duration: 19s;
+            animation-delay: 8s
+        }
+
+        .p10 {
+            left: 90%;
+            animation-duration: 14s;
+            animation-delay: 9s
+        }
+
+        /* ── slides ── */
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 56px 72px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .55s cubic-bezier(.4, 0, .2, 1), visibility .55s;
+            z-index: 1
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10
+        }
+
+        .slide.active .anim-up {
+            animation: animUp .6s ease both
+        }
+
+        .slide.active .anim-up.d1 {
+            animation-delay: .1s
+        }
+
+        .slide.active .anim-up.d2 {
+            animation-delay: .2s
+        }
+
+        .slide.active .anim-up.d3 {
+            animation-delay: .3s
+        }
+
+        .slide.active .anim-up.d4 {
+            animation-delay: .4s
+        }
+
+        .slide.active .anim-up.d5 {
+            animation-delay: .5s
+        }
+
+        @keyframes animUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* ── components ── */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(220, 38, 38, .1);
+            border: 1px solid rgba(220, 38, 38, .2);
+            color: var(--red-light);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 24px
+        }
+
+        h1 {
+            font-size: clamp(56px, 7vw, 100px);
+            font-weight: 900;
+            letter-spacing: -.05em;
+            line-height: .88;
+            text-align: center;
+            margin-bottom: 16px
+        }
+
+        h1 .stroke {
+            -webkit-text-stroke: 2.5px var(--red);
+            color: transparent
+        }
+
+        .subtitle {
+            font-size: clamp(13px, 1.6vw, 18px);
+            color: var(--dim);
+            font-weight: 400;
+            text-align: center;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            margin-bottom: 36px
+        }
+
+        .subtitle b {
+            font-weight: 700;
+            color: var(--red-light)
+        }
+
+        h2 {
+            font-size: clamp(28px, 4vw, 50px);
+            font-weight: 800;
+            letter-spacing: -.03em;
+            margin-bottom: 10px;
+            text-align: center
+        }
+
+        .desc {
+            font-size: 16px;
+            color: var(--mid);
+            text-align: center;
+            max-width: 660px;
+            line-height: 1.8;
+            margin-bottom: 32px
+        }
+
+        .desc strong {
+            color: var(--text);
+            font-weight: 600
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+            gap: 12px;
+            width: 100%;
+            max-width: 950px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px 18px;
+            text-align: center;
+            transition: all .35s;
+            position: relative;
+            overflow: hidden
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--red), transparent);
+            opacity: 0;
+            transition: opacity .35s
+        }
+
+        .card:hover::before {
+            opacity: 1
+        }
+
+        .card:hover {
+            border-color: rgba(220, 38, 38, .25);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(220, 38, 38, .08)
+        }
+
+        .ci {
+            font-size: 28px;
+            margin-bottom: 8px
+        }
+
+        .ct {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 3px;
+            color: var(--text)
+        }
+
+        .cx {
+            font-size: 11px;
+            color: var(--dim);
+            line-height: 1.5
+        }
+
+        .flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            width: 100%;
+            max-width: 540px;
+            align-items: center
+        }
+
+        .fs {
+            width: 100%;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all .3s
+        }
+
+        .fs:hover {
+            border-color: rgba(220, 38, 38, .3);
+            box-shadow: 0 8px 28px rgba(220, 38, 38, .06)
+        }
+
+        .fs.hl {
+            background: linear-gradient(135deg, var(--red-dark), var(--red));
+            color: #fff;
+            border-color: var(--red);
+            box-shadow: 0 8px 32px var(--red-glow)
+        }
+
+        .fs.hl .ft {
+            color: #fff
+        }
+
+        .fs.hl .fd {
+            color: rgba(255, 255, 255, .6)
+        }
+
+        .fs.hl .fn {
+            background: rgba(255, 255, 255, .15);
+            border-color: rgba(255, 255, 255, .2);
+            color: #fff
+        }
+
+        .fn {
+            width: 36px;
+            height: 36px;
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0
+        }
+
+        .fi {
+            flex: 1
+        }
+
+        .ft {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 1px;
+            color: var(--text)
+        }
+
+        .fd {
+            font-size: 11px;
+            color: var(--dim)
+        }
+
+        .fa {
+            font-size: 16px;
+            color: rgba(220, 38, 38, .4);
+            margin: 5px 0
+        }
+
+        .rh {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px
+        }
+
+        .rb {
+            background: var(--red);
+            color: #fff;
+            font-weight: 800;
+            font-size: 12px;
+            padding: 7px 18px;
+            border-radius: 10px;
+            letter-spacing: .05em;
+            box-shadow: 0 4px 16px var(--red-glow)
+        }
+
+        .db {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px 26px;
+            max-width: 700px;
+            width: 100%;
+            margin-bottom: 14px
+        }
+
+        .db h3 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text)
+        }
+
+        .db ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .db li {
+            font-size: 13px;
+            color: var(--mid);
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            line-height: 1.6
+        }
+
+        .db li::before {
+            content: '→';
+            color: var(--red);
+            font-weight: 700;
+            flex-shrink: 0
+        }
+
+        .tb {
+            background: rgba(220, 38, 38, .04);
+            border: 1px solid rgba(220, 38, 38, .12);
+            border-radius: 16px;
+            padding: 18px 22px;
+            max-width: 700px;
+            width: 100%
+        }
+
+        .tb h3 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--red-light)
+        }
+
+        .tb ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        .tb li {
+            font-size: 12px;
+            color: var(--mid);
+            padding-left: 18px;
+            position: relative
+        }
+
+        .tb li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--red);
+            font-weight: 700
+        }
+
+        .rt {
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse
+        }
+
+        .rt tr {
+            border-bottom: 1px solid var(--border)
+        }
+
+        .rt td {
+            padding: 12px 14px;
+            font-size: 14px;
+            vertical-align: top
+        }
+
+        .rt td:first-child {
+            font-weight: 600;
+            color: var(--text);
+            width: 160px
+        }
+
+        .rt td:last-child {
+            color: var(--mid)
+        }
+
+        /* VS slide */
+        .vs {
+            display: grid;
+            grid-template-columns: 1fr 56px 1fr;
+            gap: 0;
+            max-width: 860px;
+            width: 100%;
+            align-items: stretch
+        }
+
+        .vc {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px 22px;
+            display: flex;
+            flex-direction: column;
+            transition: border-color .3s
+        }
+
+        .vc:hover {
+            border-color: rgba(220, 38, 38, .2)
+        }
+
+        .vc.l {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none
+        }
+
+        .vc.r {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: none
+        }
+
+        .vch {
+            text-align: center;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .vch .em {
+            font-size: 26px;
+            margin-bottom: 4px
+        }
+
+        .vch h3 {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            color: var(--text)
+        }
+
+        .vch .lb {
+            color: var(--dim);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-top: 2px
+        }
+
+        .vl {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            flex: 1
+        }
+
+        .vl li {
+            font-size: 12px;
+            color: var(--mid);
+            line-height: 1.65;
+            padding-left: 16px;
+            position: relative
+        }
+
+        .vl li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 5px;
+            height: 5px;
+            background: var(--red);
+            border-radius: 50%
+        }
+
+        .vd {
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .vb {
+            width: 46px;
+            height: 46px;
+            background: var(--red);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
+            box-shadow: 0 4px 24px var(--red-glow)
+        }
+
+        .tc {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            max-width: 860px;
+            width: 100%
+        }
+
+        .cc {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all .3s
+        }
+
+        .cc:hover {
+            border-color: rgba(220, 38, 38, .2)
+        }
+
+        .cc h3 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text)
+        }
+
+        .cc ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        .cc li {
+            font-size: 12px;
+            color: var(--mid);
+            padding-left: 14px;
+            position: relative;
+            line-height: 1.6
+        }
+
+        .cc li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--red);
+            font-weight: 700
+        }
+
+        .jr {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            max-width: 600px;
+            width: 100%
+        }
+
+        .jl {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--mid);
+            width: 190px;
+            flex-shrink: 0;
+            text-align: right
+        }
+
+        .jb {
+            flex: 1;
+            height: 26px;
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden
+        }
+
+        .jbar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--red-dark), var(--red));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #fff
+        }
+
+        .quote {
+            font-size: 17px;
+            font-weight: 300;
+            color: var(--dim);
+            font-style: italic;
+            text-align: center;
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+            position: relative;
+            padding: 0 20px
+        }
+
+        .quote::before {
+            content: '"';
+            position: absolute;
+            left: -8px;
+            top: -18px;
+            font-size: 72px;
+            color: var(--red);
+            opacity: .2;
+            font-style: normal;
+            font-weight: 900
+        }
+
+        .ch {
+            font-size: clamp(48px, 6vw, 84px);
+            font-weight: 900;
+            letter-spacing: -.04em;
+            text-align: center;
+            line-height: .95;
+            margin-bottom: 8px
+        }
+
+        .cs {
+            font-size: clamp(12px, 1.8vw, 20px);
+            color: var(--dim);
+            font-weight: 300;
+            text-align: center;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            margin-bottom: 36px
+        }
+
+        .ld {
+            width: 50px;
+            height: 2.5px;
+            background: var(--red);
+            border-radius: 2px;
+            margin: 16px auto 0;
+            box-shadow: 0 0 12px var(--red-glow)
+        }
+
+        .note {
+            background: rgba(220, 38, 38, .04);
+            border: 1px solid rgba(220, 38, 38, .12);
+            border-radius: 12px;
+            padding: 14px 22px;
+            margin-top: 16px;
+            max-width: 660px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: var(--mid)
+        }
+
+        .note strong {
+            color: var(--red-light)
+        }
+
+        /* ── nav ── */
+        .nb {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(8, 8, 13, .92);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100
+        }
+
+        .nbtn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--mid);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: inherit
+        }
+
+        .nbtn:hover {
+            background: var(--red);
+            color: #fff;
+            border-color: var(--red)
+        }
+
+        .nc {
+            font-size: 11px;
+            color: var(--dim);
+            font-weight: 500
+        }
+
+        .nc .c {
+            color: var(--red-light);
+            font-weight: 700;
+            font-size: 13px
+        }
+
+        .pb {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2.5px;
+            background: linear-gradient(90deg, var(--red-dark), var(--red), var(--red-light));
+            z-index: 100;
+            transition: width .4s ease;
+            box-shadow: 0 0 12px var(--red-glow)
+        }
+
+        @media(max-width:768px) {
+            .slide {
+                padding: 36px 18px 68px
+            }
+
+            .tc,
+            .vs {
+                grid-template-columns: 1fr
+            }
+
+            .vc.l,
+            .vc.r {
+                border-radius: 18px;
+                border: 1px solid var(--border)
+            }
+
+            .vd {
+                width: auto;
+                height: 36px
+            }
+
+            .vb {
+                width: 36px;
+                height: 36px;
+                font-size: 12px
+            }
+
+            .jr {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 3px
+            }
+
+            .jl {
+                text-align: left;
+                width: auto
+            }
+
+            .jb {
+                width: 100%
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="grid-bg"></div>
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+    <div class="glow g3"></div>
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+    <div class="particle p5"></div>
+    <div class="particle p6"></div>
+    <div class="particle p7"></div>
+    <div class="particle p8"></div>
+    <div class="particle p9"></div>
+    <div class="particle p10"></div>
+    <div class="pb" id="pb"></div>
+
+    <!-- ═══ SLIDE 1: TITLE ═══ -->
+    <div class="slide active" id="s0">
+        <div class="tag anim-up">Competition 2025</div>
+        <h1 class="anim-up d1">INNO<span class="stroke">VATIA</span></h1>
+        <div class="subtitle anim-up d2"><b>Step Up</b> · <b>Stand Out</b> · <b>Pitch Your Vision</b></div>
+        <div class="ld anim-up d3"></div>
+    </div>
+
+    <!-- ═══ SLIDE 2: WHAT ═══ -->
+    <div class="slide" id="s1">
+        <div class="tag anim-up">Overview</div>
+        <h2 class="anim-up d1">What is <span style="color:var(--red)">INNOVATIA</span>?</h2>
+        <div class="desc anim-up d2">A one-day <strong>Entrepreneurship Challenge + AI Prototype Design</strong>
+            competition where your startup idea meets real technology.</div>
+        <div class="cards anim-up d3">
+            <div class="card">
+                <div class="ci">💡</div>
+                <div class="ct">Got a Startup Idea?</div>
+                <div class="cx">Bring your concept and make it real</div>
+            </div>
+            <div class="card">
+                <div class="ci">🤖</div>
+                <div class="ct">Build with AI</div>
+                <div class="cx">Create a working AI-powered prototype</div>
+            </div>
+            <div class="card">
+                <div class="ci">🌍</div>
+                <div class="ct">Solve Real Problems</div>
+                <div class="cx">Focus on socially relevant challenges</div>
+            </div>
+            <div class="card">
+                <div class="ci">⚡</div>
+                <div class="ct">All in One Day</div>
+                <div class="cx">Ideate → Build → Pitch — non-stop</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SLIDE 3: WHY ═══ -->
+    <div class="slide" id="s2">
+        <div class="tag anim-up">Benefits</div>
+        <h2 class="anim-up d1">Why Should You <span style="color:var(--red)">Join</span>?</h2>
+        <div class="cards anim-up d2">
+            <div class="card">
+                <div class="ci">🤖</div>
+                <div class="ct">Hands-on AI Exposure</div>
+                <div class="cx">Work directly with AI tools and platforms</div>
+            </div>
+            <div class="card">
+                <div class="ci">🧠</div>
+                <div class="ct">Problem Solving</div>
+                <div class="cx">Tackle real-world social challenges</div>
+            </div>
+            <div class="card">
+                <div class="ci">🏆</div>
+                <div class="ct">Awards & Recognition</div>
+                <div class="cx">Trophies and certificates for winners</div>
+            </div>
+            <div class="card">
+                <div class="ci">📈</div>
+                <div class="ct">Skill Building</div>
+                <div class="cx">Ideation → Design → Pitching pipeline</div>
+            </div>
+            <div class="card">
+                <div class="ci">🤝</div>
+                <div class="ct">Networking</div>
+                <div class="cx">Connect with 350+ like-minded peers</div>
+            </div>
+            <div class="card">
+                <div class="ci">📄</div>
+                <div class="ct">Certificates</div>
+                <div class="cx">Participation certificates for everyone</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SLIDE 4: FLOW ═══ -->
+    <div class="slide" id="s3">
+        <div class="tag anim-up">Structure</div>
+        <h2 class="anim-up d1">Competition <span style="color:var(--red)">Flow</span></h2>
+        <div class="flow anim-up d2">
+            <div class="fs">
+                <div class="fn">🎤</div>
+                <div class="fi">
+                    <div class="ft">Pre-Event Speaker Session</div>
+                    <div class="fd">Expert talk to inspire and guide you</div>
+                </div>
+            </div>
+            <div class="fa">▼</div>
+            <div class="fs hl">
+                <div class="fn">1</div>
+                <div class="fi">
+                    <div class="ft">Idea Presentation</div>
+                    <div class="fd">Pitch your concept — problem, solution, impact</div>
+                </div>
+            </div>
+            <div class="fa">▼</div>
+            <div class="fs hl">
+                <div class="fn">2</div>
+                <div class="fi">
+                    <div class="ft">AI Solution Creation</div>
+                    <div class="fd">Build a working AI prototype in the lab</div>
+                </div>
+            </div>
+            <div class="fa">▼</div>
+            <div class="fs hl">
+                <div class="fn">3</div>
+                <div class="fi">
+                    <div class="ft">Final Pitching</div>
+                    <div class="fd">Present your complete solution to judges</div>
+                </div>
+            </div>
+            <div class="fa">▼</div>
+            <div class="fs">
+                <div class="fn">🏆</div>
+                <div class="fi">
+                    <div class="ft">Awards Ceremony</div>
+                    <div class="fd">Trophies, certificates, and celebrations</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SLIDE 5: ROUND 1 ═══ -->
+    <div class="slide" id="s4">
+        <div class="tag anim-up">Round 1 of 3</div>
+        <div class="rh anim-up d1">
+            <div class="rb">ROUND 1</div>
+            <h2 style="margin:0">Idea <span style="color:var(--red)">Presentation</span></h2>
+        </div>
+        <div class="db anim-up d2">
+            <h3>What happens here?</h3>
+            <ul>
+                <li>Present your <strong>socially relevant business idea</strong></li>
+                <li>Explain the <strong>problem</strong> you're solving</li>
+                <li>Show your <strong>proposed solution</strong></li>
+                <li>Keep it crisp — <strong>3 to 5 minutes</strong> per team</li>
+                <li>Be ready for <strong>judge Q&A</strong></li>
+            </ul>
+        </div>
+        <div class="tb anim-up d3">
+            <h3>💡 Tips to Crack Round 1</h3>
+            <ul>
+                <li>Know your target audience clearly</li>
+                <li>Show real data or examples of the problem</li>
+                <li>Keep it simple — don't overcomplicate</li>
+                <li>Practice your pitch at least twice before coming</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ═══ SLIDE 6: ROUND 2 ═══ -->
+    <div class="slide" id="s5">
+        <div class="tag anim-up">Round 2 of 3</div>
+        <div class="rh anim-up d1">
+            <div class="rb">ROUND 2</div>
+            <h2 style="margin:0">AI Solution <span style="color:var(--red)">Creation</span></h2>
+        </div>
+        <div class="db anim-up d2">
+            <h3>What happens here?</h3>
+            <ul>
+                <li>Build an <strong>AI-powered prototype</strong> of your idea</li>
+                <li>Use available <strong>AI tools & platforms</strong> in the lab</li>
+                <li>Work in <strong>computer labs</strong> with internet access</li>
+                <li>Time-bound creation window — work fast & smart</li>
+                <li>This is where <strong>ideas become REAL</strong></li>
+            </ul>
+        </div>
+        <div class="tb anim-up d3">
+            <h3>🛠 Tips to Crack Round 2</h3>
+            <ul>
+                <li>Focus on a working demo, not perfection</li>
+                <li>Divide tasks within your team efficiently</li>
+                <li>Use AI tools like ChatGPT, Canva AI, GitHub Copilot</li>
+                <li>Have a backup plan if something breaks</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ═══ SLIDE 7: ROUND 3 ═══ -->
+    <div class="slide" id="s6">
+        <div class="tag anim-up">Round 3 of 3</div>
+        <div class="rh anim-up d1">
+            <div class="rb">ROUND 3</div>
+            <h2 style="margin:0">Final <span style="color:var(--red)">Pitching</span></h2>
+        </div>
+        <div class="db anim-up d2">
+            <h3>What happens here?</h3>
+            <ul>
+                <li>Present your <strong>complete idea + AI prototype</strong></li>
+                <li>Show the full pipeline: <strong>Problem → AI Solution → Impact</strong></li>
+                <li>Demonstrate your <strong>working prototype live</strong></li>
+                <li>Defend your approach in front of judges</li>
+            </ul>
+        </div>
+        <div class="tb anim-up d3">
+            <h3>🎤 Tips to Crack Round 3</h3>
+            <ul>
+                <li>Start with a powerful hook — grab attention in 10 seconds</li>
+                <li>Show the prototype FIRST, then explain</li>
+                <li>Be confident when answering questions</li>
+                <li>End with a strong closing statement</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ═══ SLIDE 8: RULES ═══ -->
+    <div class="slide" id="s7">
+        <div class="tag anim-up">Rules</div>
+        <h2 class="anim-up d1">Team Rules & <span style="color:var(--red)">Eligibility</span></h2>
+        <table class="rt anim-up d2">
+            <tr>
+                <td>👥 Team Size</td>
+                <td>Max members per team (check with organizers)</td>
+            </tr>
+            <tr>
+                <td>🎯 Theme</td>
+                <td>Socially relevant business projects only</td>
+            </tr>
+            <tr>
+                <td>💻 Tools & Labs</td>
+                <td>Computer labs provided with internet access</td>
+            </tr>
+            <tr>
+                <td>📜 Certificates</td>
+                <td>Participation certificates for all</td>
+            </tr>
+        </table>
+        <div class="ld anim-up d3"></div>
+    </div>
+
+    <!-- ═══ SLIDE 9: VIBE CODING VS SELF-AUTOMATED ═══ -->
+    <div class="slide" id="s8">
+        <div class="tag anim-up">Know the Difference</div>
+        <h2 class="anim-up d1">Vibe Coding <span style="color:var(--red)">vs</span> Self-Automated</h2>
+        <div class="vs anim-up d2">
+            <div class="vc l">
+                <div class="vch">
+                    <div class="em">🎵</div>
+                    <h3>Vibe Coding</h3>
+                    <div class="lb">AI-assisted creativity</div>
+                </div>
+                <ul class="vl">
+                    <li>You describe what you want in natural language</li>
+                    <li>AI generates code, you refine iteratively</li>
+                    <li>Fast prototyping — ideas to demo in minutes</li>
+                    <li>Focus is on <strong style="color:var(--text)">speed and exploration</strong></li>
+                    <li>Great for early-stage brainstorming</li>
+                    <li>Human acts as a <strong style="color:var(--text)">director</strong>, AI as the builder</li>
+                </ul>
+            </div>
+            <div class="vd">
+                <div class="vb">VS</div>
+            </div>
+            <div class="vc r">
+                <div class="vch">
+                    <div class="em">⚙️</div>
+                    <h3>Self-Automated Project</h3>
+                    <div class="lb">System-driven execution</div>
+                </div>
+                <ul class="vl">
+                    <li>Pre-defined logic and rules built into the system</li>
+                    <li>Code runs autonomously without human prompting</li>
+                    <li>Scalable and repeatable — runs consistently</li>
+                    <li>Focus is on <strong style="color:var(--text)">reliability and production</strong></li>
+                    <li>Great for deployed, real-world solutions</li>
+                    <li>System acts as the <strong style="color:var(--text)">engine</strong>, human as overseer</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SLIDE 10: INSPIRATION ═══ -->
+    <div class="slide" id="s9">
+        <div class="tag anim-up">Inspiration</div>
+        <h2 class="anim-up d1">Problem Areas to <span style="color:var(--red)">Explore</span></h2>
+        <div class="tc anim-up d2">
+            <div class="cc">
+                <h3>🏥 Healthcare</h3>
+                <ul>
+                    <li>Rural healthcare access</li>
+                    <li>Mental health support</li>
+                    <li>Early disease diagnosis</li>
+                    <li>Medicine supply chain</li>
+                </ul>
+            </div>
+            <div class="cc">
+                <h3>📚 Education</h3>
+                <ul>
+                    <li>Skill gap solutions</li>
+                    <li>Dropout prevention</li>
+                    <li>Accessible learning</li>
+                    <li>Personalized tutoring</li>
+                </ul>
+            </div>
+            <div class="cc">
+                <h3>🌍 Environment</h3>
+                <ul>
+                    <li>Waste management</li>
+                    <li>Carbon footprint tracking</li>
+                    <li>Water conservation</li>
+                    <li>Renewable energy access</li>
+                </ul>
+            </div>
+            <div class="cc">
+                <h3>👩‍💼 Women Safety</h3>
+                <ul>
+                    <li>Emergency response systems</li>
+                    <li>Safe route mapping</li>
+                    <li>Awareness platforms</li>
+                    <li>Community support networks</li>
+                </ul>
+            </div>
+        </div>
+        <div class="note anim-up d3"><strong>Pick ONE problem.</strong> Solve it WELL. Depth beats breadth every time.
+        </div>
+    </div>
+
+    <!-- ═══ SLIDE 11: JUDGING ═══ -->
+    <div class="slide" id="s10">
+        <div class="tag anim-up">Evaluation</div>
+        <h2 class="anim-up d1">Judging <span style="color:var(--red)">Criteria</span></h2>
+        <div style="display:flex;flex-direction:column;gap:10px;max-width:600px;width:100%" class="anim-up d2">
+            <div class="jr">
+                <div class="jl">Innovation & Originality</div>
+                <div class="jb">
+                    <div class="jbar" style="width:100%">⭐⭐⭐⭐⭐</div>
+                </div>
+            </div>
+            <div class="jr">
+                <div class="jl">AI Integration</div>
+                <div class="jb">
+                    <div class="jbar" style="width:100%">⭐⭐⭐⭐⭐</div>
+                </div>
+            </div>
+            <div class="jr">
+                <div class="jl">Social Impact</div>
+                <div class="jb">
+                    <div class="jbar" style="width:80%">⭐⭐⭐⭐</div>
+                </div>
+            </div>
+            <div class="jr">
+                <div class="jl">Presentation & Pitch</div>
+                <div class="jb">
+                    <div class="jbar" style="width:80%">⭐⭐⭐⭐</div>
+                </div>
+            </div>
+            <div class="jr">
+                <div class="jl">Feasibility</div>
+                <div class="jb">
+                    <div class="jbar" style="width:60%">⭐⭐⭐</div>
+                </div>
+            </div>
+        </div>
+        <div class="ld anim-up d3" style="margin-top:20px"></div>
+    </div>
+
+    <!-- ═══ SLIDE 12: CLOSING ═══ -->
+    <div class="slide" id="s11">
+        <div class="tag anim-up">Let's Build</div>
+        <div class="ch anim-up d1">INNO<span class="stroke">VATIA</span></div>
+        <div class="cs anim-up d2">Step Up · Stand Out · Pitch Your Vision</div>
+        <div class="quote anim-up d3">The best way to predict the future is to create it.</div>
+        <div class="ld anim-up d4"></div>
+    </div>
+
+    <!-- ═══ NAVIGATION ═══ -->
+    <div class="nb">
+        <div style="display:flex;gap:8px">
+            <button class="nbtn" onclick="go(0)">⟵</button>
+            <button class="nbtn" onclick="prev()">← Prev</button>
+        </div>
+        <div class="nc"><span class="c" id="cn">1</span> / <span id="tn">12</span></div>
+        <div style="display:flex;gap:8px">
+            <button class="nbtn" onclick="next()">Next →</button>
+            <button class="nbtn" onclick="go(slides.length-1)">⟶</button>
+        </div>
+    </div>
+
+    <script>
+        let cur = 0;
+        const slides = document.querySelectorAll('.slide');
+        const total = slides.length;
+        document.getElementById('tn').textContent = total;
+
+        function go(n) {
+            slides[cur].classList.remove('active');
+            cur = Math.max(0, Math.min(n, total - 1));
+            slides[cur].classList.add('active');
+            document.getElementById('cn').textContent = cur + 1;
+            document.getElementById('pb').style.width = ((cur + 1) / total * 100) + '%';
+        }
+        function next() { go(cur + 1) }
+        function prev() { go(cur - 1) }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); next() }
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prev() }
+            if (e.key === 'Home') { e.preventDefault(); go(0) }
+            if (e.key === 'End') { e.preventDefault(); go(total - 1) }
+        });
+
+        let tx = 0;
+        document.addEventListener('touchstart', e => { tx = e.changedTouches[0].screenX });
+        document.addEventListener('touchend', e => {
+            const d = tx - e.changedTouches[0].screenX;
+            if (Math.abs(d) > 50) { d > 0 ? next() : prev() }
+        });
+
+        document.getElementById('pb').style.width = (1 / total * 100) + '%';
+    </script>
+</body>
+
+</html>
